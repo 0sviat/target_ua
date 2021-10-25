@@ -125,9 +125,15 @@ def get_pure_user_words(user_words: List[str], letters: List[str], words_from_di
 def results():
     letters = generate_grid()
     letters = letters[0] + letters[1] + letters[2]
+    right_words_number = 0
+    dict_words = get_words('en', letters)
+    user_words = get_user_words()
+    wrong_words = get_pure_user_words(user_words, letters,dict_words)
 
+    for one_user_word in user_words:
+        if  one_user_word  in dict_words:
+            right_words_number+=1
+            dict_words.remove(one_user_word)
 
-
-Результати гри це кількість правильних слів, які ввів гравець,
-всі можливі слова, слова, які гравець пропустив,
- слова, які ввів гравець і які відсутні у словнику.
+    result = right_words_number + dict_words + wrong_words
+    return result
