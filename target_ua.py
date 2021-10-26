@@ -44,32 +44,46 @@ def list_of_letter_tuples(word):
 # print(list_of_letter_tuples('azAZ'))
 
 def check_user_words(user_words, language_part, letters, dict_of_words):
-
-
-def get_words(file_with_words: str, letters: List[str]):
-    """
-    Reads the file f. Checks the words with rules and returns a list of words.
-    """
-    words_from_dictionary = []
-    # open file with words and read it line by line
-    with open(file_with_words, mode='r', encoding='utf-8') as dictionary:
-        for word in dictionary:
-            # read new word from the file
-            current_word = word.read()
-            # if a word corresponds to the rules add it to the list
-            if rule_correct_word(current_word,letters):
-                words_from_dictionary.append(current_word)
-
-    return words_from_dictionary
-
-
-def rule_correct_word(word, letters):
     """
     (str, list) -> bool
     Check if word fits game rules:
     Starts with one of letters
     Word includes less then 6 words
     """
+    omitted_words = dict_of_words.clone()
+
+
+def get_words(file_with_words: str, letters: List[str]):
+
+    """
+    Reads the file f. Checks the words with rules (starts with symbol from letters
+    len(word) < 6) and returns a list of words.
+    """
+    words_from_dictionary = []
+    # open file with words and read it line by line
+    with open(file_with_words, mode='r', encoding='utf-8') as dictionary:
+        for line_with_word in dictionary:
+            # read new word line from the file
+            line_with_word = line_with_word.read()
+            first_white_space_index = line_with_word.index(' ')
+            if line_with_word[0] in letters and first_white_space_index < 7:
+                word = line_with_word[:first_white_space_index]
+                part_of_speech =[]
+                if '//n' in line_with_word[first_white_space_index:]\
+                    or 'noun' in line_with_word[first_white_space_index]:
+                    part_of_speech = 'noun'
+                elif  '/v' in line_with_word[first_white_space_index:]:
+                    part_of_speech = 'verb'
+                elif  '/adj' in line_with_word[first_white_space_index:]:
+                    part_of_speech = 'verb'
+
+
+
+
+                words_from_dictionary.append((word,part_of_speech))
+
+    return words_from_dictionary
+
 
 
 def results():
