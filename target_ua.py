@@ -44,11 +44,10 @@ def get_words(file_with_words: str, letters: List[str]):
                 else:
                     # speech part is not beyong indicated go to next word
                     continue
-                # add the word to a list
+                # add tuple with the word and its part speech to a list
                 words_from_dictionary.append((word,part_of_speech))
     return words_from_dictionary
 
-print(get_words('base.lst',['a']))
 print(get_words('base.lst',['а','б','в','г','д']))
 
 def check_user_words(user_words, language_part, letters, dict_of_words):
@@ -65,17 +64,13 @@ def check_user_words(user_words, language_part, letters, dict_of_words):
         if user_words[i][0] not in letters:
             user_words.pop(i)
     number_in_dict = len(dict_of_words)
+    # check for words in dictionary
     for j in range(number_in_dict):
+        # check if speech part of current word from dictionary is setted
         if dict_of_words[j][1] == language_part:
+            # check if user has written current word
             if dict_of_words[i][0] in user_words:
                 player_correct_words.append(dict_of_words[i][0])
             else:
                 omitted_words.append(dict_of_words[i][0])
     return player_correct_words, omitted_words,
-
-
-def results():
-    """
-    Return results of the game
-    """
-    letters = generate_grid()
