@@ -53,7 +53,7 @@ def rule_correctness_word(word, letters):
     All letters in the word are from grid board and itd
     number of occurrences in words is not more than in the grid board
     """
-    central_letter = letters[5]
+    central_letter = letters[5].lower()
     # if word is too short or too long or do not include central letter
     if len(word) < 4 or len(word) > 9 or central_letter not in word:
         return False
@@ -70,8 +70,8 @@ def rule_correctness_word(word, letters):
             if word_letters[index_in_word][0] == grid_letters[i][0]:
                 # then check letter's number of occurrences in the word
                 if word_letters[index_in_word][1] <= grid_letters[i][1]:
-                    # change starting letter to next by the alphabetos in grid letters
                     startig_index_in_grid_letters = i+1
+                    # change starting letter to next by the alphabetos in grid letters
                     break
                 else:
                     return False
@@ -94,14 +94,12 @@ def get_words(file_with_words: str, letters: List[str]):
     with open(file_with_words, mode='r', encoding='utf-8') as dictionary:
         for word in dictionary:
             # read new word from the file
-            current_word = word
+            current_word = word[:-1]
             # if a word corresponds to the rules add it to the list
             if rule_correctness_word(current_word,letters):
                 words_from_dictionary.append(current_word)
 
     return words_from_dictionary
-
-print(get_words('en.txt',generate_grid()))
 
 
 def get_user_words() -> List[str]:
@@ -109,8 +107,8 @@ def get_user_words() -> List[str]:
     Gets words from user input and returns a list with these words.
     Usage: enter a word or press ctrl+d to finish.
     """
-    # list_of_player_worlds = []
-    list_of_player_worlds = input().split()
+    list_of_player_worlds = []
+    # list_of_player_worlds = input().split()
     return list_of_player_worlds
 
 
@@ -127,21 +125,27 @@ def get_pure_user_words(user_words: List[str], letters: List[str], words_from_di
             wrong_words.append(not_in_dict_words)
     return wrong_words
 
-# def results():
-#     """
-#     Return results of the game
-#     """
-#     letters = generate_grid()
-#     letters = letters[0] + letters[1] + letters[2]
-#     right_words_number = 0
-#     dict_words = get_words('en', letters)
-#     user_words = get_user_words()
-#     wrong_words = get_pure_user_words(user_words, letters,dict_words)
+def results():
+    """
+    Return results of the game
+    """
+    letters = generate_grid()
+    letters = letters[0] + letters[1] + letters[2]
+    right_words_number = 0
+    dict_words = get_words('en.txt', letters)
+    user_words = get_user_words()
+    wrong_words = get_pure_user_words(user_words, letters,dict_words)
 
-#     for one_user_word in user_words:
-#         if  one_user_word  in dict_words:
-#             right_words_number+=1
-#             dict_words.remove(one_user_word)
+    for one_user_word in user_words:
+        if  one_user_word  in dict_words:
+            right_words_number+=1
+            dict_words.remove(one_user_word)
 
-#     result = right_words_number + dict_words + wrong_words
-#     return result
+    print ( right_words_number)
+    print(dict_words)
+    print(wrong_words)
+
+    # result = right_words_number + dict_words + wrong_words
+    # return result
+
+results()
