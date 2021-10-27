@@ -1,5 +1,5 @@
 """
-TARGET UKTAINIAN VERSION GAME MODULE
+TARGET UKRAINIAN VERSION GAME MODULE
 """
 from typing import List
 import random
@@ -10,14 +10,15 @@ def generate_grid() -> List[str]:
     Generates list of lists of letters - i.e. grid for the game.
     e.g. ['ч', 'щ', 'й', 'а', 'е']
     """
-    letters = [ 'б', 'в', 'г', 'ґ', 'д', 'ж', 'з', 'к', 'л', 'м', 'н', 'п', 'р', 'с', 'т',\
-     'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'й', 'а', 'е', 'є', 'и', 'і', 'ї', 'о', 'у', 'ю', 'я', 'ь']
+    letters = ['б', 'в', 'г', 'ґ', 'д', 'ж', 'з', 'к', 'л', 'м', 'н', 'п', 'р', 'с', 'т', 'ф', 'х',\
+               'ц', 'ч', 'ш', 'щ', 'й', 'а', 'е', 'є', 'и', 'і', 'ї', 'о', 'у', 'ю', 'я', 'ь']
     grid_letters = []
-    while len(grid_letters) < 5 :
+    while len(grid_letters) < 5:
         new_letter = random.choice(letters)
         if new_letter not in new_letter:
             grid_letters.append(new_letter)
     return grid_letters
+
 
 def get_words(file_with_words: str, letters: List[str]):
     """
@@ -33,11 +34,11 @@ def get_words(file_with_words: str, letters: List[str]):
                 # separate word from the line
                 word = line_word[:space_index]
                 # check language part of the word
-                if line_word[space_index + 1: space_index + 3] in ['no','/n']:
+                if line_word[space_index + 1: space_index + 3] in ['no', '/n']:
                     part_of_speech = 'noun'
-                elif line_word[space_index + 1: space_index + 3] in ['ve','/v']:
+                elif line_word[space_index + 1: space_index + 3] in ['ve', '/v']:
                     part_of_speech = 'verb'
-                elif line_word[space_index + 1: space_index + 4] in [ 'adv']:
+                elif line_word[space_index + 1: space_index + 4] in ['adv']:
                     part_of_speech = 'adverb'
                 elif line_word[space_index + 1: space_index + 4] in ['/ad', 'adj']:
                     part_of_speech = 'adjective'
@@ -45,28 +46,30 @@ def get_words(file_with_words: str, letters: List[str]):
                     # speech part is not beyong indicated go to next word
                     continue
                 # add tuple with the word and its part speech to a list
-                words_from_dictionary.append((word,part_of_speech))
+                words_from_dictionary.append((word, part_of_speech))
     return words_from_dictionary
 
-print(get_words('base.lst',['а','б','в','г','д']))
+
+print(get_words('base.lst', ['щ']))
+
 
 def check_user_words(user_words, language_part, letters, dict_of_words):
     """
     (str, list) -> bool
     Check if word fits game rules:
-    Starts with one of letters
-    Word includes less then 6 words
+    Starts with one of stated letters
+    Word includes less then 6 letters
     """
     omitted_words = []
-    player_correct_words =[]
+    player_correct_words = []
     # delete from list with user words that do not start from one of stated letters
-    for i in range(len(user_words)-1,-1,-1):
+    for i in range(len(user_words) - 1, -1, -1):
         if user_words[i][0] not in letters:
             user_words.pop(i)
     number_in_dict = len(dict_of_words)
     # check for words in dictionary
     for j in range(number_in_dict):
-        # check if speech part of current word from dictionary is setted
+        # check if speech part of current word from dictionary is chosen one
         if dict_of_words[j][1] == language_part:
             # check if user has written current word
             if dict_of_words[i][0] in user_words:
