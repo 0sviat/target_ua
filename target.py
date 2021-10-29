@@ -2,8 +2,6 @@
 TARGET GAME MODULE
 """
 import random
-import timeit
-
 
 def generate_grid():
     """
@@ -18,8 +16,6 @@ def generate_grid():
         letters[-1].append(chr(random.randint(97, 122)))
         letter_number += 1
     return letters
-
-print(generate_grid())
 
 
 def list_of_letter_tuples(word):
@@ -56,7 +52,7 @@ def rule_correctness_word(word, letters):
     """
     central_letter = letters[4]
     # if word is too short or too long or do not include central letter
-    if len(word) < 4 or len(word) > 9 or central_letter not in word.lower():
+    if len(word) < 4 or len(word) > 9 or central_letter not in word:
         return False
     # create list[tuples] with letters in alphabet order and their number of occurrences in grid
     grid_letters = list_of_letter_tuples(' '.join(letters))
@@ -90,15 +86,12 @@ def get_words(file_with_words: str, letters):
     with open(file_with_words, mode='r', encoding='utf-8') as dictionary:
         for word in dictionary:
             # read new word from the file with no symbol new line and in lower format
-            current_word = word.strip()
+            current_word = word.strip().lower()
             # if a word corresponds to the rules add it to the list
             if rule_correctness_word(current_word, letters):
                 words_from_dictionary.append(current_word)
 
     return words_from_dictionary
-
-# print(get_words('en',[el for el in 'jniarnoah']))
-
 
 def get_user_words():
     """
@@ -127,11 +120,9 @@ def results():
     Return results of the game
     """
     letters = generate_grid()
-    print(letters)
-    # letters = [['w','u','m'],['r','o','v'],['k','i','f']]
     letters = letters[0] + letters[1] + letters[2]
     right_words_number = 0
-    dict_words = get_words('en.txt', letters)
+    dict_words = get_words('en', letters)
     user_words = get_user_words()
     wrong_words = get_pure_user_words(user_words, letters, dict_words)
 
