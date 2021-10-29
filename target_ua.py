@@ -1,11 +1,10 @@
 """
 TARGET UKRAINIAN VERSION GAME MODULE
 """
-from typing import List
 import random
 
 
-def generate_grid() -> List[str]:
+def generate_grid():
     """
     Generates list of lists of letters - i.e. grid for the game.
     e.g. ['ч', 'щ', 'й', 'а', 'е']
@@ -15,12 +14,12 @@ def generate_grid() -> List[str]:
     grid_letters = []
     while len(grid_letters) < 5:
         new_letter = random.choice(letters)
-        if new_letter not in new_letter:
+        if new_letter not in grid_letters:
             grid_letters.append(new_letter)
     return grid_letters
 
 
-def get_words(file_with_words: str, letters: List[str]):
+def get_words(file_with_words: str, letters):
     """
     Reads the file f. Checks the words with rules (starts with symbol from setted letters
     and it contains less then 6 letters) Returns a list of words.
@@ -35,7 +34,10 @@ def get_words(file_with_words: str, letters: List[str]):
                 word = line_word[:space_index]
                 # check language part of the word
                 if line_word[space_index + 1: space_index + 3] in ['no', '/n']:
-                    part_of_speech = 'noun'
+                    if line_word[space_index+3] != 'n':
+                        part_of_speech = 'noun'
+                    else:
+                        continue
                 elif line_word[space_index + 1: space_index + 3] in ['ve', '/v']:
                     part_of_speech = 'verb'
                 elif line_word[space_index + 1: space_index + 4] in ['adv']:
@@ -49,13 +51,11 @@ def get_words(file_with_words: str, letters: List[str]):
                 words_from_dictionary.append((word, part_of_speech))
     return words_from_dictionary
 
-
-print(get_words('base.lst', ['щ']))
-
+# print(len(get_words('base.lst', [el for el in 'йєю'])))
 
 def check_user_words(user_words, language_part, letters, dict_of_words):
     """
-    (str, list) -> bool
+    (list, list.list) -> list, list
     Check if word fits game rules:
     Starts with one of stated letters
     Word includes less then 6 letters
@@ -72,8 +72,8 @@ def check_user_words(user_words, language_part, letters, dict_of_words):
         # check if speech part of current word from dictionary is chosen one
         if dict_of_words[j][1] == language_part:
             # check if user has written current word
-            if dict_of_words[i][0] in user_words:
-                player_correct_words.append(dict_of_words[i][0])
+            if dict_of_words[j][0] in user_words:
+                player_correct_words.append(dict_of_words[j][0])
             else:
-                omitted_words.append(dict_of_words[i][0])
+                omitted_words.append(dict_of_words[j][0])
     return player_correct_words, omitted_words,
